@@ -120,12 +120,13 @@
 		<property name="build.dir.jenkins" value="/var/lib/jenkins" />
 		<property name="build.dir.jenkins.tools" value="${build.dir.jenkins}/tools" />
 
-		<!-- ////////// SSH INFORMATION
-		<property name="ssh.username" value="coldfusion" />
-		<property name="ssh.keyfile" value="/var/lib/jenkins/secrets/capdeploy" /> -->
+		<!-- ////////// SSH INFORMATION -->
+		<property name="ssh.username" value="root" />
+		<property name="ssh.keyfile" value="/root/.ssh/id_rsa" />
 
+		<!-- //SSH for jenkins
 		<property name="ssh.username" value="jenkins" />
-		<property name="ssh.keyfile" value="/var/lib/jenkins/.ssh/id_rsa" />
+		<property name="ssh.keyfile" value="/var/lib/jenkins/.ssh/id_rsa" /> -->
 
 		<!-- ////////// JAR FILES WE NEED FOR EXTERNAL TASK -->
 		<taskdef resource="net/sf/antcontrib/antlib.xml">
