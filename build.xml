@@ -126,7 +126,7 @@
 
 		<!-- //SSH for jenkins -->
 		<property name="ssh.username" value="jenkins" />
-		<property name="ssh.keyfile" value="/var/lib/jenkins/.ssh/id_rsa" />
+		<property name="ssh.keyfile" value="${build.dir.jenkins}/.ssh/id_rsa" />
 
 		<!-- ////////// JAR FILES WE NEED FOR EXTERNAL TASK -->
 		<taskdef resource="net/sf/antcontrib/antlib.xml">
@@ -167,8 +167,6 @@
 			<arg value="-rz"/>
 			<arg value="."/>
 			<arg value="${ssh.username}@${server.dev}:${server.dev.path}/${application.name}"/>
-			<arg value="--exclude=images/**" />
-			<arg value="--exclude=ms_classes/files/**" />
 			<arg value="--delete-delay"/>
 			<arg value="-v"/>
 		</exec>
