@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Public Safety Build" basedir="../" default="build">
+	<property environment="env" />
+
+	<target name="build" depends="init">
+	    <if>
+	            <equals arg1="${env.ENVIRONMENT}" arg2="PROD" />
+	            <then>
+	                <echo message="Building a Production Environment..." />
+	                <antcall target="building.production" />
+	            </then>
+	        <elseif>
+	            <equals arg1="${env.ENVIRONMENT}" arg2="TEST" />
+	            <then>
+	                <echo message="Building a Testing Environment..." />
+	                <antcall target="building.test" />
+	            </then>
+	        </elseif>
+	        <else>
+	            <echo message="Building a Development Environment..." />
+	            <antcall target="building.dev" />
+	        </else>
+	    </if>
+	</target>
+
+	<!--///// Target: Building Evironments -->
+	<target name="building.dev">
+		<antcall>
+			<target name="build_prop" />
+			<target name="build_num" />
+			<target name="revision-version" />
+			<target name="copy-all"/>
+			<target name="move.development"/>
+			<target name="check.url.development"/>
+			<target name="clean"/>
+		</antcall>
+	</target>
+
+	<target name="building.test"  >
+		<antcall target="build_prop" />
+		<antcall target="build_num" />
+		<antcall target="revision-version" />
+		<antcall target="copy-all"/>
+		<antcall target="move.test"/>
+		<antcall target="check.url.test"/>
+		<antcall target="clean"/>
+	</target>
+
+	<target name="building.production"  >
+		<antcall target="build_prop" />
+		<antcall target="build_num" />
+		<antcall target="revision-version" />
+		<antcall target="copy-all"/>
+
+		<antcall target="move.production"/>
+		<antcall target="check.url.production"/>
+
+		<antcall target="clean"/>
+	</target>
+
+	<target name="init" depends="properties">
+		<echo message="Create ${build.dir.location} and ${publish.dir.location} folder"/>
+		<delete dir="${dist.dir}" failonerror="false" />
+		<mkdir dir="${build.dir.location}" />
+		<mkdir dir="${publish.dir.location}" />
+		<mkdir dir="${source.dir.location}" />
+	</target>
+
+	<target name="build_prop">
+		<propertyfile file="${build.dir.location}/build.properties">
+			<entry  key="build.major.number" type="int" default="1"/>
+			<entry  key="build.minor.number" type="int" default="0"/>
+			<entry  key="build.revision.number" type="int" default="0"/>
+			<entry  key="build.number" type="int" default="0"/>
+			<entry  key="build.date" type="date" value="now" />
+			<entry  key="build.time" type="date" value="now" pattern="HH:mm:ss"/>
+		</propertyfile>
+	</target>
+
+	<target name="build_num">
+		<echo message="Add build.number file to ${build.dir.location} folder" />
+		<propertyfile file="${build.dir.location}/build.number" comment="build number" >
+			<entry key="build.number" type="int" operation="=" value="${env.BUILD_NUMBER}"/>
+		</propertyfile>
+		<echo message="${env.BUILD_TAG}"/>
+		<echo message="${env.BUILD_ID}" />
+		<echo message="${env.BUILD_NUMBER}" />
+	</target>
+
+	<target name="properties">
+	  <property name="application.name" value="public_safety" />
+		<property name="dir.name" value="${application.name}" />
+		<property name="dist.dir" value="${dist.dir}" />
+		<!-- ////////// BUILD INFORMATION -->
+		<property name="build.dir.name" value="build" />
+		<property name="build.dir.location" location="${basedir}/${build.dir.name}" />
+		<property name="build.dir.tools" location="${build.dir.location}/tools" />
+		<property name="build.dir.log" location="${build.dir.location}/log" />
+		<!-- ////////// PUBLISH INFORMATION -->
+		<property name="publish.dir.name" value="publish" />
+		<property name="publish.dir.location" location="${basedir}/${publish.dir.name}" />
+		<!-- ////////// SOURCE INFORMATION -->
+		<property name="source.dir.name" value="source" />
+		<property name="source.dir.location" location="${basedir}/${source.dir.name}" />
+
+		<!-- ////////// DEV SERVER INFORMATION -->
+		<property name="server.dev" value="167.71.187.224" />
+		<property name="server.dev.path" value="/www/default/wwwroot" />
+		<property name="server.dev.url" value="157.245.9.165" />
+		<!-- ////////// TEST SERVER INFORMATION -->
+		<property name="server.test" value="157.245.4.242" />
+		<property name="server.test.path" value="/www/default/wwwroot" />
+		<property name="server.test.url" value="test-apps.austintexas.gov" />
+		<!-- ////////// PROD SERVER INFORMATION -->
+		<property name="server.prod" value="157.245.9.165" />
+		<property name="server.prod.path" value="/www/default/wwwroot" />
+		<property name="server.prod.url" value="157.245.9.165" />
+
+		<!-- ////////// JENKINS INFO -->
+		<property name="build.dir.jenkins" value="/var/lib/jenkins" />
+		<property name="build.dir.jenkins.tools" value="${build.dir.jenkins}/tools" />
+
+		<!-- ////////// SSH INFORMATION
+		<property name="ssh.username" value="coldfusion" />
+		<property name="ssh.keyfile" value="/var/lib/jenkins/secrets/capdeploy" /> -->
+
+		<property name="ssh.username" value="root" />
+
+		<!-- ////////// JAR FILES WE NEED FOR EXTERNAL TASK -->
+		<taskdef resource="net/sf/antcontrib/antlib.xml">
+			<classpath>
+				<pathelement location="${build.dir.jenkins.tools}/ant-contrib-1.0b3.jar" />
+			</classpath>
+		</taskdef>
+		<!-- Exclude Files -->
+		<property name="build.include" value="**/*.cfm, **/*.cfc, **/*.js, **/*.css, **/fonts/, **/*.htm, **/*.html, **/*.gif, **/*.jpg, **/*.png/" />
+		<!-- Exclude Files -->
+		<property name="build.exclude" value="Gruntfile.js, yarn.lock, **/*.bk, **/*.bak, **/not_used/, **/not_using/, **/lib,.gitignore, .project, .settings, build.properties, .js*intrc, README.markdown, README.md, readme.md, CHANGELOG.md, CONTRIBUTING.md, LICENSE.md, **/.git/**, **/.svn/**, doc/, ${test.dir.name}/**, ${publish.dir.name}/**, ${build.dir.name}/**, ${dist.dir.name}/**, **/build_old.xml, **_notes" />
+		<!-- DUMP the properties -->
+		<echoproperties prefix="application" />
+		<echoproperties prefix="dir" />
+		<echoproperties prefix="build" />
+		<echoproperties prefix="server" />
+		<echoproperties prefix="publish" />
+		<echoproperties prefix="source" />
+		<echoproperties prefix="ssh" />
+		<echoproperties prefix="test" />
+	</target>
+
+	<target name="copy-all">
+		<echo message="Copying over all files to ${publish.dir.location}..."/>
+		<copy todir = "${publish.dir.location}" >
+		  <fileset dir = "${source.dir.location}" excludes="${build.exclude}" includes="${build.include}" ></fileset>
+		</copy>
+		<echo message="Copying done..."/>
+	</target>
+
+	<target name="move.development">
+		<echo message="sending files to DEVELOPMENT Server (${server.dev})" />
+		<echo message="create Remote Dir ${server.dev.path}/${application.name}" />
+		<sshexec trust="true" host="${server.dev}" username="${ssh.username}" command="mkdir -p ${server.dev.path}/${application.name}" />
+		<echo message="Sending build to ${server.dev}..."/>
+		<echo message="update file structure to match repo " />
+		<exec executable="rsync" dir="./publish/" failonerror="true">
+			<arg value="-rz"/>
+			<arg value="."/>
+			<arg value="${ssh.username}@${server.dev}:${server.dev.path}/${application.name}"/>
+			<arg value="--exclude=images/**" />
+			<arg value="--exclude=ms_classes/files/**" />
+			<arg value="--delete-delay"/>
+			<arg value="-v"/>
+		</exec>
+		<echo message="Sent build to ${env.ENVIRONMENT} ${server.dev}..."/>
+	</target>
+
+	<target name="check.url.development">
+		<echo message="checking URL of DEVELOPMENT server http://${server.dev.url}/${application.name}/" />
+		<condition property="urlcheck">
+			<http url="http://${server.dev.url}/${application.name}/" />
+		</condition>
+		<echo message="${urlcheck}" />
+		<if>
+			<equals arg1="${urlcheck}" arg2="true" />
+			<then>
+			     <echo message="PASS" />
+			</then>
+			<else>
+			     <fail message="URL test FAIL" />
+			</else>
+		</if>
+	</target>
+
+	<target name="move.test">
+		<echo message="sending files to TESTING Server ${server.test}" />
+		<echo message="create Remote Dir at ${server.test.path}/${application.name} " />
+		<sshexec trust="true" host="${server.test}" username="${ssh.username}" keyfile="${ssh.keyfile}" command="mkdir -p ${server.test.path}/${application.name}" />
+		<echo message="Sending build to ${server.test}..."/>
+		<echo message="update file structure to match repo " />
+		<exec executable="rsync" dir="./publish/" failonerror="true">
+			<arg value="-rz"/>
+			<arg value="."/>
+			<arg value="${ssh.username}@${server.test}:${server.test.path}/${application.name}"/>
+			<arg value="--exclude=images/**" />
+			<arg value="--exclude=ms_classes/files/**" />
+			<arg value="--delete-delay"/>
+			<arg value="-v"/>
+		</exec>
+		<echo message="Sent build to ${env.ENVIRONMENT} ${server.test}..."/>
+	</target>
+
+	<target name="check.url.test">
+		<echo message="checking URL of TEST server http://${server.test.url}/${application.name}/" />
+		<condition property="urlcheck">
+			<http url="http://${server.test.url}/${application.name}/" />
+		</condition>
+		<echo message="${urlcheck}" />
+		<if>
+			<equals arg1="${urlcheck}" arg2="true" />
+			<then>
+			    <echo message="PASS" />
+			</then>
+			<else>
+				<fail message="URL test FAIL" />
+			</else>
+		</if>
+	</target>
+
+	<target name="move.production">
+		<echo message="sending files to PRODUCTION Server ${server.prod}" />
+		<echo message="create Remote Dir at ${server.dev.path}/${application.name}" />
+		<sshexec trust="true" host="${server.prod}" username="${ssh.username}" keyfile="${ssh.keyfile}" command="mkdir -p ${server.prod.path}/${application.name}" />
+		<echo message="Sending build to ${server.prod}..."/>
+		<echo message="update file structure to match repo " />
+		<exec executable="rsync" dir="./publish/" failonerror="true">
+			<arg value="-rz"/>
+			<arg value="."/>
+			<arg value="${ssh.username}@${server.prod}:${server.prod.path}/${application.name}"/>
+			<arg value="--exclude=images/**" />
+			<arg value="--exclude=ms_classes/files/**" />
+			<arg value="--delete-delay"/>
+			<arg value="-v"/>
+		</exec>
+		<echo message="Sent build to ${env.ENVIRONMENT} ${server.prod}..."/>
+	</target>
+
+	<target name="check.url.production">
+		<echo message="checking URL of PRODUCTION server http://${server.prod.url}/${application.name}/" />
+		<condition property="urlcheck">
+			<http url="http://${server.prod.url}/${application.name}/" />
+		</condition>
+		<echo message="${urlcheck}" />
+		<if>
+			<equals arg1="${urlcheck}" arg2="true" />
+			<then>
+			    <echo message="PASS" />
+			</then>
+			<else>
+				<fail message="URL test FAIL" />
+			</else>
+		</if>
+	</target>
+
+	<target name="major-version">
+		<propertyfile file="${build.dir.location}/build.properties">
+			<entry key="build.major.number" type="int" operation="+" value="1"/>
+		</propertyfile>
+	</target>
+
+	<target name="minor-version">
+		<propertyfile file="${build.dir.location}/build.properties">
+			<entry key="build.minor.number" type="int" operation="+" value="1"/>
+		</propertyfile>
+	</target>
+
+	<target name="revision-version" depends="build.date">
+		<propertyfile file="${build.dir.location}/build.properties">
+			<entry key="build.revision.number" type="int" operation="+" value="1"/>
+		</propertyfile>
+		<loadproperties srcFile="${build.dir.location}/build.properties"/>
+		<property name="new.build.number" value="${build.major.number}.${build.minor.number}.${build.revision.number}.${env.BUILD_NUMBER}" />
+		<propertyfile file="${build.dir.location}/build.properties">
+			<entry key="build.number" value="${new.build.number}"/>
+		</propertyfile>
+		<echo>Version: ${new.build.number}</echo>
+	</target>
+
+	<target name="build.date">
+		<tstamp>
+			<format property="tdate" pattern="dd-MMM-yyyy" />
+			<format property="ttime" pattern="HH:mm:ss" />
+		</tstamp>
+		<property name="new.build.date"  value="${tdate}"/>
+		<property name="new.build.time"  value="${ttime}"/>
+		<propertyfile file="${build.dir.location}/build.properties">
+			<entry key="build.date" value="${new.build.date}"/>
+			<entry key="build.time" value="${new.build.time}"/>
+		</propertyfile>
+		<echo>Build Date: ${new.build.date}</echo>
+		<echo>Build Time: ${new.build.time}</echo>
+	</target>
+
+	<target name="clean">
+		<echo message="Delete ${source.dir.location} and ${publish.dir.location} folder"/>
+		<delete dir="${source.dir.location}" />
+		<delete dir="${publish.dir.location}" />
+	</target>
+</project>
