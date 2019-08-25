@@ -124,7 +124,8 @@
 		<property name="ssh.username" value="coldfusion" />
 		<property name="ssh.keyfile" value="/var/lib/jenkins/secrets/capdeploy" /> -->
 
-		<property name="ssh.username" value="root" />
+		<property name="ssh.username" value="jenkins" />
+		<property name="ssh.keyfile" value="/var/lib/jenkins/.ssh/id_rsa.pub" />
 
 		<!-- ////////// JAR FILES WE NEED FOR EXTERNAL TASK -->
 		<taskdef resource="net/sf/antcontrib/antlib.xml">
@@ -158,7 +159,7 @@
 	<target name="move.development">
 		<echo message="sending files to DEVELOPMENT Server (${server.dev})" />
 		<echo message="create Remote Dir ${server.dev.path}/${application.name}" />
-		<sshexec trust="true" host="${server.dev}" username="${ssh.username}" command="mkdir -p ${server.dev.path}/${application.name}" />
+		<sshexec trust="true" host="${server.dev}" username="${ssh.username}" keyfile="${ssh.keyfile}" command="mkdir -p ${server.dev.path}/${application.name}" />
 		<echo message="Sending build to ${server.dev}..."/>
 		<echo message="update file structure to match repo " />
 		<exec executable="rsync" dir="./publish/" failonerror="true">
