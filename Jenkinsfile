@@ -3,11 +3,18 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        withAnt(installation: '/opt/ant')
+        echo 'Build'
       }
     }
-  }
-  environment {
-    Build = ''
+    stage('Publish') {
+      steps {
+        echo 'Publish'
+      }
+    }
+    stage('Deploy') {
+      steps {
+        echo 'Deploy'
+      }
+    }
   }
 }
