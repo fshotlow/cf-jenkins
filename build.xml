@@ -30,9 +30,9 @@
 			<target name="build_num" />
 			<target name="revision-version" />
 			<target name="copy-all"/>
-			<target name="move.development"/>
+			<!--<target name="move.development"/>
 			<target name="check.url.development"/>
-			<target name="clean"/>
+			<target name="clean"/> -->
 		</antcall>
 	</target>
 
