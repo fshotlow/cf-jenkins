@@ -125,7 +125,7 @@
 		<property name="ssh.keyfile" value="/var/lib/jenkins/secrets/capdeploy" /> -->
 
 		<property name="ssh.username" value="jenkins" />
-		<property name="ssh.keyfile" value="/var/lib/jenkins/.ssh/id_rsa.pub" />
+		<property name="ssh.keyfile" value="/var/lib/jenkins/.ssh/id_rsa" />
 
 		<!-- ////////// JAR FILES WE NEED FOR EXTERNAL TASK -->
 		<taskdef resource="net/sf/antcontrib/antlib.xml">
