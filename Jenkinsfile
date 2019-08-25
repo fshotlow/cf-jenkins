@@ -4,7 +4,7 @@ pipeline {
     stage('Build') {
       steps {
         echo 'Build'
-        withAnt(installation: '/opt/ant')
+        withAnt(installation: 'Ant Installation')
       }
     }
     stage('Publish') {
