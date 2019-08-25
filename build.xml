@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Public Safety Build" basedir="./" default="build">
+<project name="Public Safety Build" basedir="../" default="build">
 	<property environment="env" />
 
 	<target name="build" depends="init">
@@ -151,6 +151,19 @@
 
 	<target name="copy-all">
 		<echo message="Copying over all files to ${publish.dir.location}..."/>
+
+		<copy todir="${source.dir.location}">
+		  <fileset dir = "./" excludes="${build.exclude}" includes="${build.include}" ></fileset>
+
+		</copy>
+
+
+
+		<echo message="from ${source.dir.location}" />
+
+
+
+
 		<copy todir = "${publish.dir.location}" >
 		  <fileset dir = "${source.dir.location}" excludes="${build.exclude}" includes="${build.include}" ></fileset>
 		</copy>
