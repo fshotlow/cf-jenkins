@@ -163,7 +163,7 @@
 	<target name="initialize" depends="move.base">
 		<echo message="Copy all files to ${source.dir.location}" />
 			<move todir="${source.dir.location}" verbose="true">
-			  <fileset dir = "${application.dir.location}" ></fileset>
+			  <fileset dir = "${application.dir.location}" excludes="${application.dir.location},${build.exclude}" includes="${build.include}" >></fileset>
 			</move>
 	</target>
 
