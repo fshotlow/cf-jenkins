@@ -29,8 +29,8 @@
 			<target name="build_prop" />
 			<target name="build_num" />
 			<target name="revision-version" />
-			<target name="move.application" />
-			<target name="copy.publish" />
+			<target name="copy.application" />
+			<!-- <target name="copy.publish" /> -->
 			<!--<target name="copy-all"/> -->
 			<!--<target name="move.development"/>
 			<target name="check.url.development"/>
@@ -66,7 +66,7 @@
 		<mkdir dir="${build.dir.location}" />
 		<mkdir dir="${application.dir.location}" />
 		<mkdir dir="${publish.dir.location}" />
-		<mkdir dir="${source.dir.location}" />
+		<!-- <mkdir dir="${source.dir.location}" /> -->
 	</target>
 
 	<target name="build_prop">
@@ -172,11 +172,11 @@
 			</move> -->
 	</target>
 
-	<target name="move.application">
+	<target name="copy.application">
 		<echo message="Copy all files to application directory ${application.dir.location}" />
-		<move todir="${application.dir.location}" overwrite="true" verbose="true">
-			<fileset dir = "${build.dir.base.location}/" excludes="${build.exclude}" />
-		</move>
+		<copy todir="${application.dir.location}" overwrite="true" verbose="true">
+			<fileset dir = "${build.dir.base.location}/" excludes="${build.exclude}" includes="${build.include}" />
+		</copy>
 	</target>
 
 	<target name="copy.publish">
