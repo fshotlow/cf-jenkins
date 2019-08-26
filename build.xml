@@ -93,8 +93,11 @@
 		<property name="dist.dir" value="${dist.dir}" />
 		<!-- ////////// BUILD INFORMATION -->
 		<property name="build.dir.name" value="build" />
-		<property name="build.dir.base" locaion="${basedir}" />
 		<property name="build.dir.location" location="${basedir}/${build.dir.name}" />
+
+		<property name="build.dir.base.location" locaion="${basedir}" />
+
+
 		<property name="build.dir.tools" location="${build.dir.location}/tools" />
 		<property name="build.dir.log" location="${build.dir.location}/log" />
 		<!-- ////////// PUBLISH INFORMATION -->
