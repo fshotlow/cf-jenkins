@@ -148,7 +148,7 @@
 		<!-- Exclude Files -->
 		<property name="build.include" value="**/*.cfm, **/*.cfc, **/*.js, **/*.css, **/fonts/, **/*.htm, **/*.html, **/*.gif, **/*.jpg, **/*.png/" />
 		<!-- Exclude Files -->
-		<property name="build.exclude" value="Gruntfile.js, yarn.lock, **/*.bk, **/*.bak, **/lib, .gitignore, .project, .settings, build.properties, .js*intrc, README.markdown, README.md, readme.md, CHANGELOG.md, CONTRIBUTING.md, LICENSE.md, **/.git/**, **/.svn/**, doc/, ${test.dir.name}/**, ${publish.dir.name}/**, ${build.dir.name}/**, ${dist.dir.name}/**, **/build_old.xml, **_notes" />
+		<property name="build.exclude" value="Gruntfile.js, yarn.lock, **/*.bk, **/*.bak, **/lib, .gitignore, .project, .settings, build.properties, .js*intrc, README.markdown, README.md, readme.md, CHANGELOG.md, CONTRIBUTING.md, LICENSE.md, **/.git/**, **/.svn/**, doc/, ${test.dir.name}/**, ${publish.dir.name}/**, ${build.dir.name}/**, ${dist.dir.name}/**, **/build_old.xml, **_notes, ${application.dir.location}/**" />
 		<!-- DUMP the properties -->
 		<echoproperties prefix="application" />
 		<echoproperties prefix="dir" />
@@ -163,7 +163,7 @@
 	<target name="initialize" depends="move.base">
 		<echo message="Copy all files to ${source.dir.location}" />
 			<move todir="${source.dir.location}" verbose="true">
-			  <fileset dir = "${application.dir.location}" excludes="${application.dir.location},${build.exclude}" includes="${build.include}" >></fileset>
+			  <fileset dir = "${application.dir.location}" excludes="${application.dir.location},${build.exclude}" includes="${build.include}" ></fileset>
 			</move>
 	</target>
 
