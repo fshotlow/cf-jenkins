@@ -59,7 +59,7 @@
 	</target>
 
 	<target name="init" depends="properties">
-		<echo message="Create ${build.dir.location}, ${publish.dir.location}, {application.dir.location}, {source.dir.location} folder"/>
+		<echo message="Create ${build.dir.location}, ${publish.dir.location}, ${application.dir.location}, ${source.dir.location} folder"/>
 		<!-- <delete dir="${dist.dir}" failonerror="false" /> -->
 		<mkdir dir="${build.dir.location}" />
 		<mkdir dir="${application.dir.location}" />
@@ -170,7 +170,7 @@
 	<target name="move.base">
 		<echo message="Copy all files to application directory ${source.dir.location}" />
 		<move todir="${application.dir.location}" verbose="true">
-			<fileset dir = "./" excludes="build.xml,build/" ></fileset>
+			<fileset dir = "./" excludes="build.xml,build/,publish/,source/" ></fileset>
 		</move>
 	</target>
 
