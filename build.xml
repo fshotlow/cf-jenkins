@@ -29,7 +29,9 @@
 			<target name="build_prop" />
 			<target name="build_num" />
 			<target name="revision-version" />
-			<target name="copy-all"/>
+			<target name="move.application" />
+			<target name="copy.publish" />
+			<!--<target name="copy-all"/> -->
 			<!--<target name="move.development"/>
 			<target name="check.url.development"/>
 			<target name="clean"/>-->
@@ -160,31 +162,31 @@
 		<echoproperties prefix="test" />
 	</target>
 
-	<target name="initialize">
+	<target name="copy.publish">
 		<echo message="Copy all files to ${source.dir.location}" />
-			<move todir="${source.dir.location}" verbose="true">
+			<!-- <move todir="${source.dir.location}" verbose="true">
 			  <fileset dir = "${application.dir.location}">
 					<excludes name="${build.exclude}" />
 					<includes name="${build.include}" />
 				</fileset>
-			</move>
+			</move> -->
 	</target>
 
-	<target name="move.base">
+	<target name="move.application">
 		<echo message="Copy all files to application directory ${application.dir.location}" />
-		<move todir="${application.dir.location}" overwrite="true" verbose="true">
+		<!-- <move todir="${application.dir.location}" overwrite="true" verbose="true">
 			<fileset dir = "${build.dir.base.location}">
 				 <excludes name="${build.exclude}" />
 			</fileset>
-		</move>
+		</move> -->
 	</target>
 
-	<target name="copy-all"  depends="move.base">
+	<target name="opy.publish"  depends="move.base">
 		<echo message="Copying over all files to ${publish.dir.location}..."/>
 		<!--
 		<echo message="from ${source.dir.location}" /> -->
 		<copy todir = "${publish.dir.location}" overwrite="true" verbose="true" >
-		  <fileset dir = "${source.dir.location}" excludes="${build.exclude}" includes="${build.include}" />
+		  <fileset dir = "${application.dir.location}" excludes="${build.exclude}" includes="${build.include}" />
 		</copy>
 		<echo message="Copying done..."/>
 	</target>
