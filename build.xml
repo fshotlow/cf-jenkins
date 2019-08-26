@@ -196,11 +196,11 @@
 	<target name="move.development">
 		<echo message="sending files to DEVELOPMENT Server (${server.dev})" />
 		<echo message="create Remote Dir ${server.dev.path}/${application.name}" />
-		<sshexec trust="true" host="${server.dev}" username="${ssh.remote.username}" keyfile="${ssh.remote.keyfile}" command="mkdir -p ${server.dev.path}/${application.name}" />
+		<sshexec verbose="true" trust="true" host="${server.dev}" username="${ssh.remote.username}" keyfile="${ssh.remote.keyfile}" command="mkdir -p ${server.dev.path}/${application.name}" />
 		<echo message="Sending build to ${server.dev}..."/>
 		<echo message="update file structure to match repo " />
 		<exec executable="rsync" dir="./${application.name}/" failonerror="true">
-			<arg value="-rvz"/>
+			<arg value="-rvzavhe"/>
 			<arg value="."/>
 			<arg value="${ssh.username}@${server.dev}:${server.dev.path}/${application.name}"/>
 			<arg value="--delete-delay"/>
