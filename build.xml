@@ -60,7 +60,7 @@
 
 	<target name="init" depends="properties">
 		<echo message="Create ${build.dir.location}, ${publish.dir.location}, {application.dir.location}, {source.dir.location} folder"/>
-		<delete dir="${dist.dir}" failonerror="false" />
+		<!-- <delete dir="${dist.dir}" failonerror="false" /> -->
 		<mkdir dir="${build.dir.location}" />
 		<mkdir dir="${application.dir.location}" />
 		<mkdir dir="${publish.dir.location}" />
@@ -91,7 +91,7 @@
 	<target name="properties">
 	  <property name="application.name" value="public_safety" />
 		<property name="dir.name" value="${application.name}" />
-		<property name="dist.dir" value="${dist.dir}" />
+		<!-- <property name="dist.dir" value="${dist.dir}" /> -->
 
 		<!-- ////////// BUILD INFORMATION -->
 		<property name="build.dir.name" value="build" />
