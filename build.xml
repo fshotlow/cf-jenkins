@@ -66,7 +66,7 @@
 		<mkdir dir="${build.dir.location}" />
 		<mkdir dir="${application.dir.location}" />
 		<!-- <mkdir dir="${publish.dir.location}" />
-		<!-- <mkdir dir="${source.dir.location}" /> -->
+		<mkdir dir="${source.dir.location}" /> -->
 	</target>
 
 	<target name="build_prop">
