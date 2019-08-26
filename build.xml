@@ -196,7 +196,7 @@
 		<sshexec trust="true" host="${server.dev}" username="${ssh.username}" keyfile="${ssh.keyfile}" command="mkdir -p ${server.dev.path}/${application.name}" />
 		<echo message="Sending build to ${server.dev}..."/>
 		<echo message="update file structure to match repo " />
-		<exec executable="rsync" dir="./publish/" failonerror="true">
+		<exec executable="rsync" dir="./${application.name}/" failonerror="true">
 			<arg value="-rz"/>
 			<arg value="."/>
 			<arg value="${ssh.username}@${server.dev}:${server.dev.path}/${application.name}"/>
@@ -229,7 +229,7 @@
 		<sshexec trust="true" host="${server.test}" username="${ssh.username}" keyfile="${ssh.keyfile}" command="mkdir -p ${server.test.path}/${application.name}" />
 		<echo message="Sending build to ${server.test}..."/>
 		<echo message="update file structure to match repo " />
-		<exec executable="rsync" dir="./publish/" failonerror="true">
+		<exec executable="rsync" dir="./${application.name}/" failonerror="true">
 			<arg value="-rz"/>
 			<arg value="."/>
 			<arg value="${ssh.username}@${server.test}:${server.test.path}/${application.name}"/>
@@ -264,7 +264,7 @@
 		<sshexec trust="true" host="${server.prod}" username="${ssh.username}" keyfile="${ssh.keyfile}" command="mkdir -p ${server.prod.path}/${application.name}" />
 		<echo message="Sending build to ${server.prod}..."/>
 		<echo message="update file structure to match repo " />
-		<exec executable="rsync" dir="./publish/" failonerror="true">
+		<exec executable="rsync" dir="./${application.name}/" failonerror="true">
 			<arg value="-rz"/>
 			<arg value="."/>
 			<arg value="${ssh.username}@${server.prod}:${server.prod.path}/${application.name}"/>
