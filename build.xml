@@ -160,7 +160,7 @@
 		<echoproperties prefix="test" />
 	</target>
 
-	<target name="initialize" depends="move.base">
+	<target name="initialize">
 		<echo message="Copy all files to ${source.dir.location}" />
 			<move todir="${source.dir.location}" verbose="true">
 			  <fileset dir = "${application.dir.location}" excludes="${application.dir.location},${build.exclude}" includes="${build.include}" ></fileset>
@@ -168,13 +168,13 @@
 	</target>
 
 	<target name="move.base">
-		<echo message="Copy all files to application directory ${source.dir.location}" />
+		<echo message="Copy all files to application directory ${application.dir.location}" />
 		<move todir="${application.dir.location}" verbose="true">
 			<fileset dir = "./" excludes="build.xml,build/,publish/,source/" ></fileset>
 		</move>
 	</target>
 
-	<target name="copy-all"  depends="initialize">
+	<target name="copy-all"  depends="move.base">
 		<echo message="Copying over all files to ${publish.dir.location}..."/>
 		<!--
 		<echo message="from ${source.dir.location}" /> -->
