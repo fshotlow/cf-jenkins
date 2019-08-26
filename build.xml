@@ -162,7 +162,7 @@
 		<echoproperties prefix="test" />
 	</target>
 
-	<target name="copy.publish">
+	<target name="copy.publish.old">
 		<echo message="Copy all files to ${source.dir.location}" />
 			<!-- <move todir="${source.dir.location}" verbose="true">
 			  <fileset dir = "${application.dir.location}">
@@ -181,7 +181,7 @@
 		</move> -->
 	</target>
 
-	<target name="opy.publish"  depends="move.base">
+	<target name="copy.publish">
 		<echo message="Copying over all files to ${publish.dir.location}..."/>
 		<!--
 		<echo message="from ${source.dir.location}" /> -->
