@@ -31,8 +31,8 @@
 			<target name="revision-version" />
 			<target name="copy-all"/>
 			<!--<target name="move.development"/>
-			<target name="check.url.development"/>-->
-			<target name="clean"/>
+			<target name="check.url.development"/>
+			<target name="clean"/>-->
 		</antcall>
 	</target>
 
@@ -327,7 +327,7 @@
 
 	<target name="clean">
 		<echo message="Delete ${source.dir.location} and ${publish.dir.location} folder"/>
-		<delete dir="${build.dir.base.location}/.git" />
+		<!-- <delete dir="${build.dir.base.location}/.git" /> -->
 		<delete dir="${source.dir.location}" />
 		<delete dir="${publish.dir.location}" />
 	</target>
