@@ -163,7 +163,10 @@
 	<target name="initialize">
 		<echo message="Copy all files to ${source.dir.location}" />
 			<move todir="${source.dir.location}" verbose="true">
-			  <fileset dir = "${application.dir.location}" excludes="${application.dir.location},${build.exclude}" includes="${build.include}" ></fileset>
+			  <fileset dir = "${application.dir.location}">
+					<excludes name="${build.exclude}" />
+					<includes name="${build.include}" />
+				</fileset>
 			</move>
 	</target>
 
@@ -171,7 +174,7 @@
 		<echo message="Copy all files to application directory ${application.dir.location}" />
 		<move todir="${application.dir.location}" overwrite="true" verbose="true">
 			<fileset dir = "${build.dir.base.location}">
-				 <excludes name="${build.exclude}" >
+				 <excludes name="${build.exclude}" />
 			</fileset>
 		</move>
 	</target>
