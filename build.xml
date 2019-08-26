@@ -174,11 +174,11 @@
 
 	<target name="move.application">
 		<echo message="Copy all files to application directory ${application.dir.location}" />
-		<!-- <move todir="${application.dir.location}" overwrite="true" verbose="true">
+		<move todir="${application.dir.location}" overwrite="true" verbose="true">
 			<fileset dir = "${build.dir.base.location}">
 				 <excludes name="${build.exclude}" />
 			</fileset>
-		</move> -->
+		</move>
 	</target>
 
 	<target name="copy.publish">
