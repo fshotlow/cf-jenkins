@@ -169,8 +169,10 @@
 
 	<target name="move.base">
 		<echo message="Copy all files to application directory ${application.dir.location}" />
-		<move todir="${application.dir.location}" verbose="true">
-			<fileset dir = "./" excludes="build.xml,build/,publish/,source/" ></fileset>
+		<move todir="${application.dir.location}" overwrite="true" verbose="true">
+			<fileset dir = "${build.dir.base.location}">
+				 <excludes name="${build.exclude}" >
+			</fileset>
 		</move>
 	</target>
 
@@ -178,8 +180,8 @@
 		<echo message="Copying over all files to ${publish.dir.location}..."/>
 		<!--
 		<echo message="from ${source.dir.location}" /> -->
-		<copy todir = "${publish.dir.location}" >
-		  <fileset dir = "${source.dir.location}" excludes="${build.exclude}" includes="${build.include}" ></fileset>
+		<copy todir = "${publish.dir.location}" overwrite="true" verbose="true" >
+		  <fileset dir = "${source.dir.location}" excludes="${build.exclude}" includes="${build.include}" />
 		</copy>
 		<echo message="Copying done..."/>
 	</target>
