@@ -157,7 +157,7 @@
 			</copy>
 	</target>
 
-	<target name="copy-all">
+	<target name="copy-all"  depends="initialize">
 		<echo message="Copying over all files to ${publish.dir.location}..."/>
 		<!--
 		<echo message="from ${source.dir.location}" /> -->
