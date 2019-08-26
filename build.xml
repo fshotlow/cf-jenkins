@@ -104,7 +104,7 @@
 
 		<!-- ////////// APPLICATION INFORMATION -->
 		<property name="application.dir.location" location="${basedir}/${dir.name}" />
-		
+
 
 		<!-- ////////// PUBLISH INFORMATION -->
 		<property name="publish.dir.name" value="publish" />
@@ -159,16 +159,18 @@
 		<echoproperties prefix="test" />
 	</target>
 
-	<target name="initialize">
+	<target name="initialize" depends="move.base">
 		<echo message="Copy all files to ${source.dir.location}" />
 			<move todir="${source.dir.location}" verbose="true">
-			  <fileset dir = "./" excludes="build.xml" ></fileset>
-
+			  <fileset dir = "${application.dir.location}" ></fileset>
 			</move>
 	</target>
 
-	<target name="">
+	<target name="move.base">
 		<echo message="Copy all files to application directory ${source.dir.location}" />
+		<move todir="${application.dir.location}" verbose="true">
+			<fileset dir = "./" excludes="build.xml,build/" ></fileset>
+		</move>
 	</target>
 
 	<target name="copy-all"  depends="initialize">
