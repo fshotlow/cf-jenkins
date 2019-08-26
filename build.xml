@@ -200,11 +200,10 @@
 		<echo message="Sending build to ${server.dev}..."/>
 		<echo message="update file structure to match repo " />
 		<exec executable="rsync" dir="./${application.name}/" failonerror="true">
-			<arg value="-rz"/>
+			<arg value="-rvz"/>
 			<arg value="."/>
 			<arg value="${ssh.username}@${server.dev}:${server.dev.path}/${application.name}"/>
 			<arg value="--delete-delay"/>
-			<arg value="-v"/>
 		</exec>
 		<echo message="Sent build to ${env.ENVIRONMENT} ${server.dev}..."/>
 	</target>
