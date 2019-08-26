@@ -315,7 +315,7 @@
 
 	<target name="clean">
 		<echo message="Delete ${source.dir.location} and ${publish.dir.location} folder"/>
-		<delete dir="${build.dir.base}/.git" />
+		<delete dir="${build.dir.base.location}/.git" />
 		<delete dir="${source.dir.location}" />
 		<delete dir="${publish.dir.location}" />
 	</target>
