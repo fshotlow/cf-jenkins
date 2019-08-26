@@ -315,6 +315,5 @@
 		<delete dir="${build.dir.base}/.git" />
 		<delete dir="${source.dir.location}" />
 		<delete dir="${publish.dir.location}" />
-		<delete file="" verbose="true"
 	</target>
 </project>
