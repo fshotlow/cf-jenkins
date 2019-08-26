@@ -91,6 +91,7 @@
 	  <property name="application.name" value="public_safety" />
 		<property name="dir.name" value="${application.name}" />
 		<property name="dist.dir" value="${dist.dir}" />
+
 		<!-- ////////// BUILD INFORMATION -->
 		<property name="build.dir.name" value="build" />
 		<property name="build.dir.location" location="${basedir}/${build.dir.name}" />
@@ -100,6 +101,11 @@
 
 		<property name="build.dir.tools" location="${build.dir.location}/tools" />
 		<property name="build.dir.log" location="${build.dir.location}/log" />
+
+		<!-- ////////// APPLICATION INFORMATION -->
+		<property name="application.dir.location" location="${basedir}/${dir.name}" />
+		
+
 		<!-- ////////// PUBLISH INFORMATION -->
 		<property name="publish.dir.name" value="publish" />
 		<property name="publish.dir.location" location="${basedir}/${publish.dir.name}" />
@@ -159,6 +165,10 @@
 			  <fileset dir = "./" excludes="build.xml" ></fileset>
 
 			</move>
+	</target>
+
+	<target name="">
+		<echo message="Copy all files to application directory ${source.dir.location}" />
 	</target>
 
 	<target name="copy-all"  depends="initialize">
