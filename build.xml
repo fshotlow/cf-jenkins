@@ -93,6 +93,7 @@
 		<property name="dist.dir" value="${dist.dir}" />
 		<!-- ////////// BUILD INFORMATION -->
 		<property name="build.dir.name" value="build" />
+		<property name="build.dir.base" locaion="${basedir}" />
 		<property name="build.dir.location" location="${basedir}/${build.dir.name}" />
 		<property name="build.dir.tools" location="${build.dir.location}/tools" />
 		<property name="build.dir.log" location="${build.dir.location}/log" />
@@ -152,7 +153,7 @@
 	<target name="initialize">
 		<echo message="Copy all files to ${source.dir.location}" />
 			<move todir="${source.dir.location}" verbose="true">
-			  <fileset dir = "./" excludes="${build.exclude}" includes="${build.include}" ></fileset>
+			  <fileset dir = "./" excludes="build.xml" ></fileset>
 
 			</move>
 	</target>
@@ -311,7 +312,9 @@
 
 	<target name="clean">
 		<echo message="Delete ${source.dir.location} and ${publish.dir.location} folder"/>
+		<delete dir="${build.dir.base}/.git" />
 		<delete dir="${source.dir.location}" />
 		<delete dir="${publish.dir.location}" />
+		<delete file="" verbose="true"
 	</target>
 </project>
