@@ -150,7 +150,7 @@
 		<!-- Exclude Files -->
 		<property name="build.include" value="**/*.cfm, **/*.cfc, **/*.js, **/*.css, **/fonts/, **/*.htm, **/*.html, **/*.gif, **/*.jpg, **/*.png/" />
 		<!-- Exclude Files -->
-		<property name="build.exclude" value="Gruntfile.js, yarn.lock, **/*.bk, **/*.bak, **/lib, .gitignore, .project, .settings, build.properties, .js*intrc, README.markdown, README.md, readme.md, CHANGELOG.md, CONTRIBUTING.md, LICENSE.md, **/.git/**, **/.svn/**, doc/, ${test.dir.name}/**, ${publish.dir.name}/**, ${build.dir.name}/**, ${dist.dir.name}/**, **/build_old.xml, **_notes, ${application.dir.location}/**" />
+		<property name="build.exclude" value="Gruntfile.js, yarn.lock, **/*.bk, **/*.bak, **/lib, .gitignore, .project, .settings, build.properties, .js*intrc, README.markdown, README.md, readme.md, CHANGELOG.md, CONTRIBUTING.md, LICENSE.md, **/.git/**, **/.svn/**, doc/, ${test.dir.name}/**, ${publish.dir.name}/**, ${build.dir.name}/**, ${dist.dir.name}/**, **/build.xml, **_notes, ${application.dir.location}/**" />
 		<!-- DUMP the properties -->
 		<echoproperties prefix="application" />
 		<echoproperties prefix="dir" />
