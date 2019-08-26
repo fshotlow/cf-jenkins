@@ -150,7 +150,7 @@
 	</target>
 
 	<target name="initialize">
-		<echo message="Copy all files to ${source.dir.location}">
+		<echo message="Copy all files to ${source.dir.location}" />
 			<copy todir="${source.dir.location}">
 			  <fileset dir = "./" excludes="${build.exclude}" includes="${build.include}" ></fileset>
 
