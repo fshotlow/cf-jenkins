@@ -202,7 +202,7 @@
 
 		<exec executable="rsync" dir="./${application.name}/" failonerror="true">
 			<arg value="-zavhe"/>
-			<arg value="-r">
+			<arg value="-r" />
 			<arg value="."/>
 			<arg value="${ssh.remote.username}@${server.dev}:${server.dev.path}/${application.name}"/>
 			<arg value="--dry-run"/>
