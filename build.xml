@@ -193,17 +193,54 @@
 		<echo message="Copying done..."/>
 	</target>
 
+	<target name="move.development.dryrun">
+		<echo message="sending files to DEVELOPMENT Server (${server.dev})" />
+		<echo message="create Remote Dir ${server.dev.path}/${application.name}" />
+		<sshexec verbose="true" trust="true" host="${server.dev}" username="${ssh.remote.username}" keyfile="${ssh.remote.keyfile}" command="mkdir -p ${server.dev.path}/${application.name}" />
+		<echo message="Sending build to ${server.dev}..."/>
+		<echo message="update file structure to match repo " />
+
+		<exec executable="rsync" dir="./${application.name}/" failonerror="true">
+			<arg value="-zavhe"/>
+			<arg value="-r">
+			<arg value="."/>
+			<arg value="${ssh.remote.username}@${server.dev}:${server.dev.path}/${application.name}"/>
+			<arg value="--dry-run"/>
+			<arg value="-v" />
+		</exec>
+		<echo message="Sent build to ${env.ENVIRONMENT} ${server.dev}..."/>
+	</target>
+
 	<target name="move.development">
 		<echo message="sending files to DEVELOPMENT Server (${server.dev})" />
 		<echo message="create Remote Dir ${server.dev.path}/${application.name}" />
 		<sshexec verbose="true" trust="true" host="${server.dev}" username="${ssh.remote.username}" keyfile="${ssh.remote.keyfile}" command="mkdir -p ${server.dev.path}/${application.name}" />
 		<echo message="Sending build to ${server.dev}..."/>
 		<echo message="update file structure to match repo " />
+
+		<!--
+		<scp file="myfile.txt"
+     todir="${ssh.remote.username}@${server.dev}:${server.dev.path}/${application.name}"
+     keyfile="${ssh.remote.keyfile}"
+     passphrase="my extremely secret passphrase">
+
+	 </scp>
+
+		<exec executable="scp" dir="./${application.name}/" failonerror="true">
+			<arg value="-r">
+			<arg value="${ssh.remote.username}@${server.dev}:${server.dev.path}/${application.name}"/>
+
+		</exec>
+	-->
+
 		<exec executable="rsync" dir="./${application.name}/" failonerror="true">
 			<arg value="-rvzavhe"/>
+			<arg value="-r">
 			<arg value="."/>
+			<arg value="-i ${ssh.remote.keyfile}" />
 			<arg value="${ssh.remote.username}@${server.dev}:${server.dev.path}/${application.name}"/>
 			<arg value="--delete-delay"/>
+			<arg value="-v" />
 		</exec>
 		<echo message="Sent build to ${env.ENVIRONMENT} ${server.dev}..."/>
 	</target>
