@@ -246,9 +246,9 @@
 			<arg value="-rz"/>
 			<arg value="."/>
 			<arg value="-i ${ssh.remote.keyfile} ${ssh.username}@${server.test}:${server.test.path}/${application.name}"/>
-			<arg value="--exclude=images/**" />
-			<arg value="--exclude=ms_classes/files/**" />
-			<arg value="--delete-delay"/>
+			<arg value="\-\-exclude=images/**" />
+			<arg value="\-\-exclude=ms_classes/files/**" />
+			<arg value="\-\-delete-delay"/>
 			<arg value="-v"/>
 		</exec> -->
 		<echo message="Sent build to ${env.ENVIRONMENT} ${server.prod}..."/>
