@@ -245,7 +245,7 @@
 		<exec executable="rsync" dir="./${application.name}/" failonerror="true">
 			<arg value="-rz"/>
 			<arg value="ssh -i ${ssh.remote.keyfile}" />
-			<arg value="${ssh.remote.username}@${server.test}:${server.prod.path}/${application.name}"/>
+			<arg value="${ssh.remote.username}@${server.prod}:${server.prod.path}/${application.name}"/>
 			<arg value="--delete-delay"/>
 			<arg value="-h" />
 			<arg value="-v"/>
