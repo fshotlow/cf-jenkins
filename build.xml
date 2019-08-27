@@ -238,9 +238,20 @@
 		<sshexec trust="true" host="${server.prod}" username="${ssh.remote.username}" keyfile="${ssh.remote.keyfile}" command="mkdir -p ${server.prod.path}/${application.name}" />
 		<echo message="Sending build to ${server.prod}..."/>
 		<echo message="update file structure to match repo " />
-		<scp trust="true" verbose="true" todir="${ssh.remote.username}@${server.prod}:${server.prod.path}/${application.name}" keyfile="${ssh.remote.keyfile}">
+		<!--<scp trust="true" verbose="true" todir="${ssh.remote.username}@${server.prod}:${server.prod.path}/${application.name}" keyfile="${ssh.remote.keyfile}">
 				 <fileset dir="./${application.name}/" />
-		</scp>
+		</scp> -->
+
+		<exec executable="rsync" dir="./publish/" failonerror="true">
+			<arg value="-rz"/>
+			<arg value="."/>
+			<arg value="-i ${ssh.remote.keyfile}" />
+			<arg value="${ssh.username}@${server.test}:${server.test.path}/${application.name}"/>
+			<arg value="--exclude=images/**" />
+			<arg value="--exclude=ms_classes/files/**" />
+			<arg value="--delete-delay"/>
+			<arg value="-v"/>
+		</exec>
 		<echo message="Sent build to ${env.ENVIRONMENT} ${server.prod}..."/>
 	</target>
 
