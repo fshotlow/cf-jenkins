@@ -39,21 +39,11 @@
 		</antcall>
 	</target>
 
-	<target name="building.test"  >
-		<antcall target="build_prop" />
-		<antcall target="build_num" />
-		<antcall target="revision-version" />
-		<antcall target="copy-all"/>
-		<antcall target="move.test"/>
-		<antcall target="check.url.test"/>
-		<antcall target="clean"/>
-	</target>
-
 	<target name="building.production"  >
 		<antcall target="build_prop" />
 		<antcall target="build_num" />
 		<antcall target="revision-version" />
-		<antcall target="copy-all"/>
+		<antcall target="copy.application" />
 
 		<antcall target="move.production"/>
 		<antcall target="check.url.production"/>
@@ -222,25 +212,6 @@
 		<scp trust="true" verbose="true" todir="${ssh.remote.username}@${server.dev}:${server.dev.path}/${application.name}" keyfile="${ssh.remote.keyfile}">
 				 <fileset dir="./${application.name}/" />
 		</scp>
-<!--
-		<exec executable="scp" dir="./${application.name}/" failonerror="true">
-			<arg value="-r">
-			<arg value="${ssh.remote.username}@${server.dev}:${server.dev.path}/${application.name}"/>
-
-		</exec>
-	-->
-
-		<!--
-		<exec executable="rsync" dir="./${application.name}/" failonerror="true">
-			<arg value="-rvzavhe"/>
-			<arg value="-r" />
-			<arg value="."/>
-			<arg value="-i ${ssh.remote.keyfile}" />
-			<arg value="${ssh.remote.username}@${server.dev}:${server.dev.path}/${application.name}"/>
-			<arg value="\-\-delete-delay"/>
-			<arg value="-v" />
-		</exec>
-	-->
 		<echo message="Sent build to ${env.ENVIRONMENT} ${server.dev}..."/>
 	</target>
 
@@ -261,56 +232,15 @@
 		</if>
 	</target>
 
-	<target name="move.test">
-		<echo message="sending files to TESTING Server ${server.test}" />
-		<echo message="create Remote Dir at ${server.test.path}/${application.name} " />
-		<sshexec trust="true" host="${server.test}" username="${ssh.username}" keyfile="${ssh.keyfile}" command="mkdir -p ${server.test.path}/${application.name}" />
-		<echo message="Sending build to ${server.test}..."/>
-		<echo message="update file structure to match repo " />
-		<exec executable="rsync" dir="./${application.name}/" failonerror="true">
-			<arg value="-rz"/>
-			<arg value="."/>
-			<arg value="${ssh.username}@${server.test}:${server.test.path}/${application.name}"/>
-			<arg value="--exclude=images/**" />
-			<arg value="--exclude=ms_classes/files/**" />
-			<arg value="--delete-delay"/>
-			<arg value="-v"/>
-		</exec>
-		<echo message="Sent build to ${env.ENVIRONMENT} ${server.test}..."/>
-	</target>
-
-	<target name="check.url.test">
-		<echo message="checking URL of TEST server http://${server.test.url}/${application.name}/" />
-		<condition property="urlcheck">
-			<http url="http://${server.test.url}/${application.name}/" />
-		</condition>
-		<echo message="${urlcheck}" />
-		<if>
-			<equals arg1="${urlcheck}" arg2="true" />
-			<then>
-			    <echo message="PASS" />
-			</then>
-			<else>
-				<fail message="URL test FAIL" />
-			</else>
-		</if>
-	</target>
-
 	<target name="move.production">
 		<echo message="sending files to PRODUCTION Server ${server.prod}" />
 		<echo message="create Remote Dir at ${server.dev.path}/${application.name}" />
-		<sshexec trust="true" host="${server.prod}" username="${ssh.username}" keyfile="${ssh.keyfile}" command="mkdir -p ${server.prod.path}/${application.name}" />
+		<sshexec trust="true" host="${server.prod}" username="${ssh.remote.username}" keyfile="${ssh.remote.keyfile}" command="mkdir -p ${server.prod.path}/${application.name}" />
 		<echo message="Sending build to ${server.prod}..."/>
 		<echo message="update file structure to match repo " />
-		<exec executable="rsync" dir="./${application.name}/" failonerror="true">
-			<arg value="-rz"/>
-			<arg value="."/>
-			<arg value="${ssh.username}@${server.prod}:${server.prod.path}/${application.name}"/>
-			<arg value="--exclude=images/**" />
-			<arg value="--exclude=ms_classes/files/**" />
-			<arg value="--delete-delay"/>
-			<arg value="-v"/>
-		</exec>
+		<scp trust="true" verbose="true" todir="${ssh.remote.username}@${server.prod}:${server.prod.path}/${application.name}" keyfile="${ssh.remote.keyfile}">
+				 <fileset dir="./${application.name}/" />
+		</scp>
 		<echo message="Sent build to ${env.ENVIRONMENT} ${server.prod}..."/>
 	</target>
 
