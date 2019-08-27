@@ -245,8 +245,7 @@
 		<exec executable="rsync" dir="./${application.name}/" failonerror="true">
 			<arg value="-rz"/>
 			<arg value="."/>
-			<arg value="-i ${ssh.remote.keyfile}" />
-			<arg value="${ssh.username}@${server.test}:${server.test.path}/${application.name}"/>
+			<arg value="-i ${ssh.remote.keyfile} ${ssh.username}@${server.test}:${server.test.path}/${application.name}"/>
 			<arg value="--exclude=images/**" />
 			<arg value="--exclude=ms_classes/files/**" />
 			<arg value="--delete-delay"/>
