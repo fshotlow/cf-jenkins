@@ -304,6 +304,6 @@
 		<echo message="Delete ${application.dir.location} folder"/>
 		<!-- <delete dir="${build.dir.base.location}/.git" /> -->
 		<delete dir="${application.dir.location}" />
-		<delete files="*.*" />
+		<delete file="*.*" />
 	</target>
 </project>
