@@ -242,7 +242,7 @@
 				 <fileset dir="./${application.name}/" />
 		</scp> -->
 
-		<exec executable="rsync" dir="./publish/" failonerror="true">
+		<exec executable="rsync" dir="./${application.name}/" failonerror="true">
 			<arg value="-rz"/>
 			<arg value="."/>
 			<arg value="-i ${ssh.remote.keyfile}" />
