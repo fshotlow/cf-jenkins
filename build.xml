@@ -208,10 +208,22 @@
 		<echo message="Sending build to ${server.dev}..."/>
 		<echo message="update file structure to match repo " />
 
-
+		<!--
 		<scp trust="true" verbose="true" todir="${ssh.remote.username}@${server.dev}:${server.dev.path}/${application.name}" keyfile="${ssh.remote.keyfile}">
 				 <fileset dir="./${application.name}/" />
 		</scp>
+	-->
+
+
+		<exec executable="rsync" dir="./${application.name}" failonerror="true">
+			<arg value="-rz"/>
+			<arg value="."/>
+			<!-- <arg value="'ssh -i ${ssh.remote.keyfile}'" /> -->
+			<arg value="${ssh.remote.username}@${server.dev}:${server.dev.path}/${application.name}"/>
+			<arg value="--delete-delay"/>
+			<arg value="-h" />
+			<arg value="-v"/>
+		</exec>
 		<echo message="Sent build to ${env.ENVIRONMENT} ${server.dev}..."/>
 	</target>
 
