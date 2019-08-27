@@ -247,7 +247,6 @@
 			<arg value="ssh -i ${ssh.remote.keyfile}" />
 			<arg value="${ssh.username}@${server.test}:${server.prod.path}/${application.name}"/>
 			<arg value="--delete-delay"/>
-			<arg value="--chown root:webusers" />
 			<arg value="-h" />
 			<arg value="-v"/>
 		</exec>
