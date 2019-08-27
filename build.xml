@@ -218,14 +218,11 @@
 		<echo message="Sending build to ${server.dev}..."/>
 		<echo message="update file structure to match repo " />
 
-		<!--
-		<scp file="myfile.txt"
-     todir="${ssh.remote.username}@${server.dev}:${server.dev.path}/${application.name}"
-     keyfile="${ssh.remote.keyfile}"
-     passphrase="my extremely secret passphrase">
 
-	 </scp>
-
+		<scp trust="true" verbose="true" todir="${ssh.remote.username}@${server.dev}:${server.dev.path}/${application.name}" keyfile="${ssh.remote.keyfile}">
+				 <fileset dir="./${application.name}/" />
+		</scp>
+<!--
 		<exec executable="scp" dir="./${application.name}/" failonerror="true">
 			<arg value="-r">
 			<arg value="${ssh.remote.username}@${server.dev}:${server.dev.path}/${application.name}"/>
@@ -233,6 +230,7 @@
 		</exec>
 	-->
 
+		<!--
 		<exec executable="rsync" dir="./${application.name}/" failonerror="true">
 			<arg value="-rvzavhe"/>
 			<arg value="-r" />
@@ -242,6 +240,7 @@
 			<arg value="--delete-delay"/>
 			<arg value="-v" />
 		</exec>
+	-->
 		<echo message="Sent build to ${env.ENVIRONMENT} ${server.dev}..."/>
 	</target>
 
