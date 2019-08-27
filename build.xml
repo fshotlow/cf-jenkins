@@ -235,7 +235,7 @@
 
 		<exec executable="rsync" dir="./${application.name}/" failonerror="true">
 			<arg value="-rvzavhe"/>
-			<arg value="-r">
+			<arg value="-r" />
 			<arg value="."/>
 			<arg value="-i ${ssh.remote.keyfile}" />
 			<arg value="${ssh.remote.username}@${server.dev}:${server.dev.path}/${application.name}"/>
