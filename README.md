@@ -7,15 +7,15 @@
 
 Create new group for coldfusion and apache
 
-`groupadd webusers`
+```groupadd webusers```
 
 create new coldfusion user
 
-`adduser --system -g webusers -s /sbin/nologin -M -c ColdFusion cfuser`
+```adduser --system -g webusers -s /sbin/nologin -M -c ColdFusion cfuser```
 
 create / edit silent install properties
 
-`touch silent.install`
+```touch silent.install```
 
 make coldfusion install executeable
 
@@ -27,13 +27,13 @@ chmod +x ColdFusion_2018_WWWE_64linux.bin
 
 start coldfusion
 
-`service cf2018 start`
+```service cf2018 start```
 
 ## Install and Configure Apache Web Server
 
 ### Install Apache and git 
 
-`yum install -y httpd git`
+```yum install -y httpd git```
 
 ### Setup Directory for Web Roots
 
@@ -47,7 +47,7 @@ mkdir -p /www/default/wwwroot
 
 add the apache user to group
 
-`usermod -aG webusers apache`
+```usermod -aG webusers apache```
 
 Update file system permissions
 
@@ -61,16 +61,16 @@ Edit httpd.conf and change the DocumentRoot from /var/www/html to your new defau
 
 create index.html
 
-`echo 'Hello' > /www/default/wwwroot/index.html`
+```echo 'Hello' > /www/default/wwwroot/index.html```
 
 Restart Apache
 
-`service httpd restart`
+```service httpd restart```
 
 Test apache
 
-`curl http://localhost/`
+```curl http://localhost/```
 
 ### Start Apache on Boot
 
-`systemctl enable httpd.service`
+```systemctl enable httpd.service```
