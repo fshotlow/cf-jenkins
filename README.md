@@ -19,10 +19,11 @@ create / edit silent install properties
 
 make coldfusion install executeable
 
-``
+```
 chmod +x ColdFusion_2018_WWWE_64linux.bin
+
 ./ColdFusion_2018_WWWE_64linux.bin -f silent.install
-``
+```
 
 start coldfusion
 
@@ -38,11 +39,11 @@ start coldfusion
 
 create default wwwroot
 
-``
+```
 mkdir -p /www
 mkdir -p /www/default
 mkdir -p /www/default/wwwroot
-``
+```
 
 add the apache user to group
 
@@ -50,11 +51,11 @@ add the apache user to group
 
 Update file system permissions
 
-``
+```
 chown -R root:webusers /www
 chmod -R 750 /www
 chcon -R -t httpd_sys_content_t -u system_u /www/default/wwwroot/
-``
+```
 
 Edit httpd.conf and change the DocumentRoot from /var/www/html to your new default site root /www/default/wwwroot
 
@@ -71,4 +72,5 @@ Test apache
 `curl http://localhost/`
 
 ### Start Apache on Boot
-systemctl enable httpd.service
+
+`systemctl enable httpd.service`
