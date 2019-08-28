@@ -58,11 +58,11 @@ wget https://sourceforge.net/projects/jsch/files/jsch.jar/0.1.55/jsch-0.1.55.jar
 
 cp and rename id_rsa
 
-``
+```
 cp -p /root/.ssh/id_rsa /var/lib/jenkins/secrets/deploy
 chown jenkins:jenkins /var/lib/jenkins/secrets/deploy
 chmod 400 /var/lib/jenkins/secrets/deploy
-``
+```
 
 ## ColdFusion Installation
 
