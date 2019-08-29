@@ -90,6 +90,7 @@ cp and rename id_rsa
 cp -p /root/.ssh/id_rsa /var/lib/jenkins/secrets/deploy
 chown jenkins:jenkins /var/lib/jenkins/secrets/deploy
 chmod 400 /var/lib/jenkins/secrets/deploy
+chcon -t var_lib_t -u system_u /var/lib/jenkins/secrets/deploy
 ```
 
 ### Add Additional Tools
@@ -99,6 +100,7 @@ ant-contrib, JSch
 cd /var/lib/jenkins/tools/
 wget https://sourceforge.net/projects/ant-contrib/files/ant-contrib/1.0b3/ant-contrib-1.0b3-bin.zip
 unzip ant-contrib-1.0b3-bin.zip
+chcon -R -t var_lib_t -u system_u ant-contrib/
 ```
 
 add JSch - Java Secure Channel http://www.jcraft.com/jsch/
