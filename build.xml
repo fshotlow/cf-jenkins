@@ -138,7 +138,7 @@
 		<!-- ////////// JAR FILES WE NEED FOR EXTERNAL TASK -->
 		<taskdef resource="net/sf/antcontrib/antlib.xml">
 			<classpath>
-				<pathelement location="${build.dir.jenkins.tools}/ant-contrib-1.0b3.jar" />
+				<pathelement location="${build.dir.jenkins.tools}/ant-contrib/ant-contrib-1.0b3.jar" />
 			</classpath>
 		</taskdef>
 		<!-- Exclude Files -->
