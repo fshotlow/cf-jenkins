@@ -36,7 +36,63 @@ Find jenkins inital password
 
 ``cat /var/lib/jenkins/secrets/initialAdminPassword``
 
-Install Ant
+## Manage Jenkins
+Goto Manage Jenkins
+
+#### Install Plugins
+
+install these Plugins
+- GitHub API Plugin
+- GitHub Plugin
+- Ant Plugin
+- Green balls Plugin
+- Git Parameter Plugin
+
+Restart Jenkins
+
+Login Jenkins
+
+### Configure System
+- Github
+  - Enter Github.com info
+  - create a personal token in github.com that has repo:status, all admin:repo_hook (write, read)
+  - save github personal token as secret text credentials. Test connection
+
+
+
+
+
+#### Configure firstJob
+
+Creete freestyle project
+- check:: github project and enter github repo
+- check::This project is parameterized
+  - add string parameter
+    - name: ENIVRONMENT. default value: DEV. description: DEV, PROD
+  - add git paramter
+    - name: Git Branches. description: list git branches. paramter Type: branch. default value: origin/master
+- under source code.
+  - choose Git. Enter repo  user github Clone with HTTPS url.
+- add additional behaviours:: Wipe out repository & force clone
+- check:: GitHub hook trigger for GITScm polling <!-- http://JENKIND-IP:8080/github-webhook/  -->
+- Build
+  - Add build step:: Invoke Ant
+- Post-build Actions
+  - Email Notification
+    - add email address
+- Save Job
+
+Goto gihub.com repo that you are setting Jenkins job for. Goto settings, webhooks and add http://JENKIND-IP:8080/github-webhook/
+- let me select individual events
+  - check:: pull request
+  - check:: pushes
+  - save
+
+
+Run the firstJob in Jenkins. It might fail. Need to setup local ANT.
+
+
+## Install Ant
 
 Download Apache Ant
 
@@ -84,7 +140,7 @@ Check the ant version using command
 
 ``ant -version``
 
-cp and rename id_rsa
+cp and rename root id_rsa
 
 ```
 cp -p /root/.ssh/id_rsa /var/lib/jenkins/secrets/deploy
@@ -104,11 +160,33 @@ chcon -R -t var_lib_t -u system_u ant-contrib/
 ```
 
 add JSch - Java Secure Channel http://www.jcraft.com/jsch/
+
 ```
 cd /opt/ant/lib
 wget https://sourceforge.net/projects/jsch/files/jsch.jar/0.1.55/jsch-0.1.55.jar
 ```
 
+Login as jenkins user
+
+``
+su - jenkins -s /bin/sh
+``
+
+Create ssh key
+
+``
+ssh-keygen
+``
+
+Copy jenkins public key to other servers
+
+Make sure to ssh into servers
+
+```
+ssh -i /var/lib/jenkins/secrets/deploy  root@CF-server-IP
+ssh -i /var/lib/jenkins/secrets/deploy  root@CF-server-IP
+ssh -i /var/lib/jenkins/secrets/deploy  root@CF-server-IP
+```
 
 
 ## ColdFusion Installation

@@ -110,11 +110,11 @@
 		<!-- ////////// DEV SERVER INFORMATION -->
 		<property name="server.dev" value="167.71.187.224" />
 		<property name="server.dev.path" value="/www/default/wwwroot" />
-		<property name="server.dev.url" value="157.245.9.165" />
+		<property name="server.dev.url" value="167.71.187.224" />
 		<!-- ////////// TEST SERVER INFORMATION -->
 		<property name="server.test" value="157.245.4.242" />
 		<property name="server.test.path" value="/www/default/wwwroot" />
-		<property name="server.test.url" value="test-apps.austintexas.gov" />
+		<property name="server.test.url" value="157.245.4.242" />
 		<!-- ////////// PROD SERVER INFORMATION -->
 		<property name="server.prod" value="157.245.9.165" />
 		<property name="server.prod.path" value="/www/default/wwwroot" />
@@ -124,14 +124,7 @@
 		<property name="build.dir.jenkins" value="/var/lib/jenkins" />
 		<property name="build.dir.jenkins.tools" value="${build.dir.jenkins}/tools" />
 
-		<!-- ////////// SSH INFORMATION
-		<property name="ssh.username" value="root" />
-		<property name="ssh.keyfile" value="/root/.ssh/id_rsa" />-->
-
-		<!-- //SSH for jenkins -->
-		<property name="ssh.username" value="jenkins" />
-		<property name="ssh.keyfile" value="${build.dir.jenkins}/.ssh/id_rsa" />
-
+		<!-- ////////// SSH INFORMATION  -->
 		<property name="ssh.remote.username" value="root" />
 		<property name="ssh.remote.keyfile" value="${build.dir.jenkins}/secrets/deploy" />
 
