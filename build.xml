@@ -29,28 +29,21 @@
 			<target name="build_prop" />
 			<target name="build_num" />
 			<target name="revision-version" />
-			<target name="copy-all"/>
+			<target name="copy.application" />
+			<!-- <target name="copy.publish" /> -->
+			<!--<target name="copy-all"/> -->
+			<!---->
 			<target name="move.development"/>
 			<target name="check.url.development"/>
 			<target name="clean"/>
 		</antcall>
 	</target>
 
-	<target name="building.test"  >
-		<antcall target="build_prop" />
-		<antcall target="build_num" />
-		<antcall target="revision-version" />
-		<antcall target="copy-all"/>
-		<antcall target="move.test"/>
-		<antcall target="check.url.test"/>
-		<antcall target="clean"/>
-	</target>
-
 	<target name="building.production"  >
 		<antcall target="build_prop" />
 		<antcall target="build_num" />
 		<antcall target="revision-version" />
-		<antcall target="copy-all"/>
+		<antcall target="copy.application" />
 
 		<antcall target="move.production"/>
 		<antcall target="check.url.production"/>
@@ -59,11 +52,12 @@
 	</target>
 
 	<target name="init" depends="properties">
-		<echo message="Create ${build.dir.location} and ${publish.dir.location} folder"/>
-		<delete dir="${dist.dir}" failonerror="false" />
+		<echo message="Create ${build.dir.location}, ${application.dir.location} folder"/>
+		<!-- <delete dir="${dist.dir}" failonerror="false" /> -->
 		<mkdir dir="${build.dir.location}" />
-		<mkdir dir="${publish.dir.location}" />
-		<mkdir dir="${source.dir.location}" />
+		<mkdir dir="${application.dir.location}" />
+		<!-- <mkdir dir="${publish.dir.location}" />
+		<mkdir dir="${source.dir.location}" /> -->
 	</target>
 
 	<target name="build_prop">
@@ -90,12 +84,22 @@
 	<target name="properties">
 	  <property name="application.name" value="public_safety" />
 		<property name="dir.name" value="${application.name}" />
-		<property name="dist.dir" value="${dist.dir}" />
+		<!-- <property name="dist.dir" value="${dist.dir}" /> -->
+
 		<!-- ////////// BUILD INFORMATION -->
 		<property name="build.dir.name" value="build" />
 		<property name="build.dir.location" location="${basedir}/${build.dir.name}" />
+
+		<property name="build.dir.base.location" location="${basedir}/" />
+
+
 		<property name="build.dir.tools" location="${build.dir.location}/tools" />
 		<property name="build.dir.log" location="${build.dir.location}/log" />
+
+		<!-- ////////// APPLICATION INFORMATION -->
+		<property name="application.dir.location" location="${basedir}/${dir.name}" />
+
+
 		<!-- ////////// PUBLISH INFORMATION -->
 		<property name="publish.dir.name" value="publish" />
 		<property name="publish.dir.location" location="${basedir}/${publish.dir.name}" />
@@ -106,11 +110,11 @@
 		<!-- ////////// DEV SERVER INFORMATION -->
 		<property name="server.dev" value="167.71.187.224" />
 		<property name="server.dev.path" value="/www/default/wwwroot" />
-		<property name="server.dev.url" value="157.245.9.165" />
+		<property name="server.dev.url" value="167.71.187.224" />
 		<!-- ////////// TEST SERVER INFORMATION -->
 		<property name="server.test" value="157.245.4.242" />
 		<property name="server.test.path" value="/www/default/wwwroot" />
-		<property name="server.test.url" value="test-apps.austintexas.gov" />
+		<property name="server.test.url" value="157.245.4.242" />
 		<!-- ////////// PROD SERVER INFORMATION -->
 		<property name="server.prod" value="157.245.9.165" />
 		<property name="server.prod.path" value="/www/default/wwwroot" />
@@ -120,24 +124,20 @@
 		<property name="build.dir.jenkins" value="/var/lib/jenkins" />
 		<property name="build.dir.jenkins.tools" value="${build.dir.jenkins}/tools" />
 
-		<!-- ////////// SSH INFORMATION
-		<property name="ssh.username" value="root" />
-		<property name="ssh.keyfile" value="/root/.ssh/id_rsa" />-->
-
-		<!-- //SSH for jenkins -->
-		<property name="ssh.username" value="jenkins" />
-		<property name="ssh.keyfile" value="${build.dir.jenkins}/.ssh/id_rsa" />
+		<!-- ////////// SSH INFORMATION  -->
+		<property name="ssh.remote.username" value="root" />
+		<property name="ssh.remote.keyfile" value="${build.dir.jenkins}/secrets/deploy" />
 
 		<!-- ////////// JAR FILES WE NEED FOR EXTERNAL TASK -->
 		<taskdef resource="net/sf/antcontrib/antlib.xml">
 			<classpath>
-				<pathelement location="${build.dir.jenkins.tools}/ant-contrib-1.0b3.jar" />
+				<pathelement location="${build.dir.jenkins.tools}/ant-contrib/ant-contrib-1.0b3.jar" />
 			</classpath>
 		</taskdef>
 		<!-- Exclude Files -->
 		<property name="build.include" value="**/*.cfm, **/*.cfc, **/*.js, **/*.css, **/fonts/, **/*.htm, **/*.html, **/*.gif, **/*.jpg, **/*.png/" />
 		<!-- Exclude Files -->
-		<property name="build.exclude" value="Gruntfile.js, yarn.lock, **/*.bk, **/*.bak, **/not_used/, **/not_using/, **/lib,.gitignore, .project, .settings, build.properties, .js*intrc, README.markdown, README.md, readme.md, CHANGELOG.md, CONTRIBUTING.md, LICENSE.md, **/.git/**, **/.svn/**, doc/, ${test.dir.name}/**, ${publish.dir.name}/**, ${build.dir.name}/**, ${dist.dir.name}/**, **/build_old.xml, **_notes" />
+		<property name="build.exclude" value="Gruntfile.js, yarn.lock, **/*.bk, **/*.bak, **/lib, .gitignore, .project, .settings, build.properties, .js*intrc, README.markdown, README.md, readme.md, CHANGELOG.md, CONTRIBUTING.md, LICENSE.md, **/.git/**, **/.svn/**, doc/, ${test.dir.name}/**, ${publish.dir.name}/**, ${build.dir.name}/**, ${dist.dir.name}/**, **/build.xml, **_notes, ${application.dir.location}/**" />
 		<!-- DUMP the properties -->
 		<echoproperties prefix="application" />
 		<echoproperties prefix="dir" />
@@ -149,25 +149,72 @@
 		<echoproperties prefix="test" />
 	</target>
 
-	<target name="copy-all">
+	<target name="copy.publish.old">
+		<echo message="Copy all files to ${source.dir.location}" />
+			<!-- <move todir="${source.dir.location}" verbose="true">
+			  <fileset dir = "${application.dir.location}">
+					<excludes name="${build.exclude}" />
+					<includes name="${build.include}" />
+				</fileset>
+			</move> -->
+	</target>
+
+	<target name="copy.application">
+		<echo message="Copy all files to application directory ${application.dir.location}" />
+		<copy todir="${application.dir.location}" overwrite="true" verbose="true">
+			<fileset dir = "${build.dir.base.location}/" excludes="${build.exclude}" includes="${build.include}" />
+		</copy>
+	</target>
+
+	<target name="copy.publish">
 		<echo message="Copying over all files to ${publish.dir.location}..."/>
-		<copy todir = "${publish.dir.location}" >
-		  <fileset dir = "${source.dir.location}" excludes="${build.exclude}" includes="${build.include}" ></fileset>
+		<!--
+		<echo message="from ${source.dir.location}" /> -->
+		<copy todir = "${publish.dir.location}" overwrite="true" verbose="true" >
+		  <fileset dir = "${application.dir.location}" excludes="${build.exclude}" includes="${build.include}" />
 		</copy>
 		<echo message="Copying done..."/>
+	</target>
+
+	<target name="move.development.dryrun">
+		<echo message="sending files to DEVELOPMENT Server (${server.dev})" />
+		<echo message="create Remote Dir ${server.dev.path}/${application.name}" />
+		<sshexec verbose="true" trust="true" host="${server.dev}" username="${ssh.remote.username}" keyfile="${ssh.remote.keyfile}" command="mkdir -p ${server.dev.path}/${application.name}" />
+		<echo message="Sending build to ${server.dev}..."/>
+		<echo message="update file structure to match repo " />
+
+		<exec executable="rsync" dir="./${application.name}/" failonerror="true">
+			<arg value="-zavhe"/>
+			<arg value="-r" />
+			<arg value="."/>
+			<arg value="${ssh.remote.username}@${server.dev}:${server.dev.path}/${application.name}"/>
+			<arg value="--dry-run"/>
+			<arg value="-v" />
+		</exec>
+		<echo message="Sent build to ${env.ENVIRONMENT} ${server.dev}..."/>
 	</target>
 
 	<target name="move.development">
 		<echo message="sending files to DEVELOPMENT Server (${server.dev})" />
 		<echo message="create Remote Dir ${server.dev.path}/${application.name}" />
-		<sshexec trust="true" host="${server.dev}" username="${ssh.username}" keyfile="${ssh.keyfile}" command="mkdir -p ${server.dev.path}/${application.name}" />
+		<sshexec verbose="false" trust="true" host="${server.dev}" username="${ssh.remote.username}" keyfile="${ssh.remote.keyfile}" command="mkdir -p ${server.dev.path}/${application.name}" />
 		<echo message="Sending build to ${server.dev}..."/>
 		<echo message="update file structure to match repo " />
-		<exec executable="rsync" dir="./publish/" failonerror="true">
+
+		<!--
+		<scp trust="true" verbose="true" todir="${ssh.remote.username}@${server.dev}:${server.dev.path}/${application.name}" keyfile="${ssh.remote.keyfile}">
+				 <fileset dir="./${application.name}/" />
+		</scp>
+	-->
+
+
+		<exec executable="rsync" dir="./${application.name}" failonerror="true">
 			<arg value="-rz"/>
 			<arg value="."/>
-			<arg value="${ssh.username}@${server.dev}:${server.dev.path}/${application.name}"/>
+			<!-- <arg value="'ssh -i ${ssh.remote.keyfile}'" /> -->
+			<arg value="${ssh.remote.username}@${server.dev}:${server.dev.path}/${application.name}"/>
 			<arg value="--delete-delay"/>
+			<arg value="-h" />
 			<arg value="-v"/>
 		</exec>
 		<echo message="Sent build to ${env.ENVIRONMENT} ${server.dev}..."/>
@@ -190,54 +237,23 @@
 		</if>
 	</target>
 
-	<target name="move.test">
-		<echo message="sending files to TESTING Server ${server.test}" />
-		<echo message="create Remote Dir at ${server.test.path}/${application.name} " />
-		<sshexec trust="true" host="${server.test}" username="${ssh.username}" keyfile="${ssh.keyfile}" command="mkdir -p ${server.test.path}/${application.name}" />
-		<echo message="Sending build to ${server.test}..."/>
-		<echo message="update file structure to match repo " />
-		<exec executable="rsync" dir="./publish/" failonerror="true">
-			<arg value="-rz"/>
-			<arg value="."/>
-			<arg value="${ssh.username}@${server.test}:${server.test.path}/${application.name}"/>
-			<arg value="--exclude=images/**" />
-			<arg value="--exclude=ms_classes/files/**" />
-			<arg value="--delete-delay"/>
-			<arg value="-v"/>
-		</exec>
-		<echo message="Sent build to ${env.ENVIRONMENT} ${server.test}..."/>
-	</target>
-
-	<target name="check.url.test">
-		<echo message="checking URL of TEST server http://${server.test.url}/${application.name}/" />
-		<condition property="urlcheck">
-			<http url="http://${server.test.url}/${application.name}/" />
-		</condition>
-		<echo message="${urlcheck}" />
-		<if>
-			<equals arg1="${urlcheck}" arg2="true" />
-			<then>
-			    <echo message="PASS" />
-			</then>
-			<else>
-				<fail message="URL test FAIL" />
-			</else>
-		</if>
-	</target>
-
 	<target name="move.production">
 		<echo message="sending files to PRODUCTION Server ${server.prod}" />
 		<echo message="create Remote Dir at ${server.dev.path}/${application.name}" />
-		<sshexec trust="true" host="${server.prod}" username="${ssh.username}" keyfile="${ssh.keyfile}" command="mkdir -p ${server.prod.path}/${application.name}" />
+		<sshexec trust="true" host="${server.prod}" username="${ssh.remote.username}" keyfile="${ssh.remote.keyfile}" command="mkdir -p ${server.prod.path}/${application.name}" />
 		<echo message="Sending build to ${server.prod}..."/>
 		<echo message="update file structure to match repo " />
-		<exec executable="rsync" dir="./publish/" failonerror="true">
+		<!-- <scp trust="true" verbose="true" todir="${ssh.remote.username}@${server.prod}:${server.prod.path}/${application.name}" keyfile="${ssh.remote.keyfile}">
+				 <fileset dir="./${application.name}/" />
+		</scp> -->
+
+		<exec executable="rsync" dir="./${application.name}" failonerror="true">
 			<arg value="-rz"/>
 			<arg value="."/>
-			<arg value="${ssh.username}@${server.prod}:${server.prod.path}/${application.name}"/>
-			<arg value="--exclude=images/**" />
-			<arg value="--exclude=ms_classes/files/**" />
+			<!-- <arg value="'ssh -i ${ssh.remote.keyfile}'" /> -->
+			<arg value="${ssh.remote.username}@${server.prod}:${server.prod.path}/${application.name}"/>
 			<arg value="--delete-delay"/>
+			<arg value="-h" />
 			<arg value="-v"/>
 		</exec>
 		<echo message="Sent build to ${env.ENVIRONMENT} ${server.prod}..."/>
@@ -300,8 +316,9 @@
 	</target>
 
 	<target name="clean">
-		<echo message="Delete ${source.dir.location} and ${publish.dir.location} folder"/>
-		<delete dir="${source.dir.location}" />
-		<delete dir="${publish.dir.location}" />
+		<echo message="Delete ${application.dir.location} folder"/>
+		<!-- <delete dir="${build.dir.base.location}/.git" /> -->
+		<delete dir="${application.dir.location}" />
+		<delete file="*.*" />
 	</target>
 </project>
