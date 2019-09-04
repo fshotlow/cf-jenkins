@@ -1,20 +1,14 @@
 pipeline {
-    agent any
-
+    agent {
+        docker {
+            image 'ortussolutions/commandbox'
+        }
+    }
     stages {
-        stage('Build') {
+        stage('Static Analysis') { 
             steps {
-                echo 'Building..'
-            }
-        }
-        stage('Test') {
-            steps {
-                echo 'Testing..'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
+                sh 'box install commandbox-cflint'
+                sh 'box cflint reportLevel=ERROR'
             }
         }
     }
