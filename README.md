@@ -59,9 +59,6 @@ Login Jenkins
   - save github personal token as secret text credentials. Test connection
 
 
-
-
-
 #### Configure firstJob
 
 Creete freestyle project
@@ -242,9 +239,10 @@ Update file system permissions
 chown -R root:webusers /www
 chmod -R 750 /www
 chcon -R -t httpd_sys_content_t -u system_u /www/default/wwwroot/
+chcon -R -t httpd_sys_content_t -u system_u /www/default/logs/
 ```
 
-Edit httpd.conf and change the DocumentRoot from /var/www/html to your new default site root /www/default/wwwroot
+Edit /etc/httpd/conf/httpd.conf and change the DocumentRoot from ``/var/www/html`` to your new default site root ``/www/default/wwwroot``
 
 create index.html
 
