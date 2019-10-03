@@ -223,12 +223,13 @@ start coldfusion
 
 ### Setup Directory for Web Roots
 
-create default wwwroot
+create default wwwroot and logs folder
 
 ```
 mkdir -p /www
 mkdir -p /www/default
 mkdir -p /www/default/wwwroot
+mkdir -p /www/default/logs
 ```
 
 add the apache user to group
@@ -260,3 +261,45 @@ Test apache
 ### Start Apache on Boot
 
 ```systemctl enable httpd.service```
+
+
+### Add vhost
+```
+<VirtualHost *:80>
+  ServerName http://ip.address
+  ServerAlias ip.address
+	DocumentRoot /www/default/wwwroot
+  <Directory "/www/default/wwwroot">
+      Options -Indexes FollowSymLinks
+      AllowOverride All
+      Order allow,deny
+      Allow from all
+  </Directory>
+
+  #logs
+  ErrorLog /www/default/logs/error.log
+  CustomLog /www/default/logs/access.log combined
+</VirtualHost>
+```
+
+
+### add logrotate
+``` cd /etc/logrotate.d/ ```
+
+create new config
+``` touch -p /etc/logrotate.d/http-custom ```
+
+```
+/www/default/logs/*.log {
+    rotate 10
+    size 25M
+    missingok
+    notifempty
+    sharedscripts
+    compress
+    postrotate
+        /sbin/service httpd reload > /dev/null 2>/dev/null || true
+    endscript
+}
+
+```
