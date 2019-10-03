@@ -264,6 +264,11 @@ Test apache
 
 
 ### Add vhost
+create vhost
+``` touch /etc/httpd/conf.d/vhost.conf ```
+
+add below to file created above.
+
 ```
 <VirtualHost *:80>
   ServerName http://ip.address
@@ -289,6 +294,8 @@ Test apache
 create new config
 ``` touch -p /etc/logrotate.d/http-custom ```
 
+add below to file created above.
+
 ```
 /www/default/logs/*.log {
     rotate 10
@@ -303,3 +310,7 @@ create new config
 }
 
 ```
+
+Restart Apache
+
+```service httpd restart```
