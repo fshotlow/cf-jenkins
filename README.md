@@ -31,6 +31,13 @@ sudo chkconfig jenkins on
 
 ```
 
+### Adjust Firewall
+
+```
+sudo firewall-cmd --permanent --zone=public --add-port=8080/tcp
+sudo firewall-cmd --reload
+```
+
 goto browser `IP_address:8080`
 Find jenkins inital password
 
